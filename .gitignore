@@ -2,3 +2,4 @@ chest_xray/
 __pycache__/
 .ipynb_checkpoints/
 *.zip
+kaggle.json
