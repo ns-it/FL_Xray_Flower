@@ -1,0 +1,36 @@
+# ==========================================
+# FL Thesis Experiment Configuration
+# ==========================================
+
+# اسم التجربة (سيتم إنشاء مجلد بهذا الاسم لحفظ النتائج)
+experiment_name: "Exp_4.4.2_Baseline_NonIID"
+
+kaggle:
+  dataset_handle: "paultimothymooney/chest-xray-pneumonia"
+  download_path: "./data"
+
+data:
+  # 100.0 = IID | 0.5 = Realistic | 0.1 = Extreme
+  alpha: 0.5
+  num_clients: 10
+  img_size: 128
+
+client:
+  # 'custom_cnn' or 'mobilenet_v2'
+  model_arch: "custom_cnn"
+  
+  # E: 1 or 5
+  local_epochs: 1
+  batch_size: 32
+  
+  # 'sgd' or 'adam'
+  optimizer: "sgd"
+  learning_rate: 0.01
+  momentum: 0.9
+
+server:
+  num_rounds: 15
+  # 'fedavg', 'fedprox', 'fedadam'
+  strategy: "fedavg"
+  server_lr: 0.01
+  proximal_mu: 0.01
