@@ -10,24 +10,19 @@ from sklearn.utils import class_weight
 # --- 1. Kaggle Data Setup ---
 def setup_kaggle_and_download(dataset_handle, download_path="./data"):
     """
-    يجهز بيئة Kaggle ويحمل البيانات تلقائياً.
-    يتطلب وجود ملف kaggle.json في المجلد الرئيسي.
+    يحمل البيانات باستخدام إعدادات Kaggle الموجودة مسبقاً.
     """
-    print("📥 Setting up Kaggle environment...")
-    
-    # التأكد من وجود ملف التوكين
-    if not os.path.exists("kaggle.json"):
-        raise FileNotFoundError("❌ Please upload 'kaggle.json' to the root directory!")
+    # التحقق من وجود المفتاح في مكانه الصحيح (الذي وضعناه في الخلية السابقة)
+    if not os.path.exists(os.path.expanduser("~/.kaggle/kaggle.json")):
+        raise FileNotFoundError("❌ Kaggle API key not found! Please run the upload cell first.")
 
-    # إعداد المجلدات
-    os.makedirs(os.path.expanduser("~/.kaggle"), exist_ok=True)
-    shutil.copy("kaggle.json", os.path.expanduser("~/.kaggle/kaggle.json"))
-    os.chmod(os.path.expanduser("~/.kaggle/kaggle.json"), 0o600)
+    print(f"📥 Downloading dataset: {dataset_handle}...")
 
     # التحميل
     if not os.path.exists(f"{download_path}/chest_xray"):
-        print(f"⬇️ Downloading {dataset_handle}...")
         import kaggle
+        # authenticate() يتم تلقائياً عند الاستيراد إذا كان الملف في المسار الصحيح
+        kaggle.api.authenticate()
         kaggle.api.dataset_download_files(dataset_handle, path=download_path, unzip=True)
         print("✅ Download & Unzip Complete.")
     else:
